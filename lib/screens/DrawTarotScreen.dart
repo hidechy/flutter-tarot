@@ -6,12 +6,16 @@ import 'package:http/http.dart';
 
 import 'dart:convert';
 
+import '../utilities/utility.dart';
+
 class DrawTarotScreen extends StatefulWidget {
   @override
   _DrawTarotScreenState createState() => _DrawTarotScreenState();
 }
 
 class _DrawTarotScreenState extends State<DrawTarotScreen> {
+  Utility _utility = Utility();
+
   String name = "";
   String just_reverse = "";
   String image = "";
@@ -84,55 +88,69 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity,
-          child: DefaultTextStyle(
-            style: TextStyle(fontSize: 20),
-            child: Column(
-              children: <Widget>[
-                Text(
-                  '${name}',
-                  style: TextStyle(fontSize: 30),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          _utility.getBackGround(context: context),
+          SingleChildScrollView(
+            child: Container(
+              width: double.infinity,
+              child: DefaultTextStyle(
+                style: TextStyle(fontSize: 20),
+                child: Column(
+                  children: <Widget>[
+                    Text(
+                      '${name}',
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    RotatedBox(
+                      quarterTurns: _qt,
+                      child: Image.network(image),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      '${word}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const Divider(color: Colors.indigo),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      decoration: BoxDecoration(
+                          color: Colors.greenAccent.withOpacity(0.3)),
+                      padding: EdgeInsets.only(left: 10),
+                      child:
+                          (just_reverse == "just") ? Text('正位置') : Text('正位置'),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        '${msg}',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        '${msg2}',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        '${msg3}',
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ],
                 ),
-                Text('${just_reverse}'),
-                RotatedBox(
-                  quarterTurns: _qt,
-                  child: Image.network(image),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  '${word}',
-                  style: TextStyle(fontSize: 14),
-                ),
-                Text(
-                  '${msg}',
-                  style: TextStyle(fontSize: 14),
-                ),
-                const Divider(color: Colors.indigo),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  height: (size.height / 8),
-                  child: Text(
-                    '${msg2}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-                const Divider(color: Colors.indigo),
-                Container(
-                  padding: EdgeInsets.all(10),
-                  height: (size.height / 4),
-                  child: Text(
-                    '${msg3}',
-                    style: TextStyle(fontSize: 14),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

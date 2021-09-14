@@ -7,8 +7,16 @@ import 'dart:convert';
 
 import 'package:tarotcard/screens/TarotDetailScreen.dart';
 
+import './utilities/utility.dart';
+
+import 'package:flutter/services.dart';
+
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(new MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -33,6 +41,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Utility _utility = Utility();
+
   List<Map<dynamic, dynamic>> _tarot_cups = List();
   List<Map<dynamic, dynamic>> _tarot_wands = List();
   List<Map<dynamic, dynamic>> _tarot_pentacles = List();
@@ -167,33 +177,40 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 20),
-              alignment: Alignment.topLeft,
-              child: RaisedButton(
-                child: Text('Get Today\'s Fortune.'),
-                onPressed: () => _goDrawTarotScreen(),
-              ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          _utility.getBackGround(context: context),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(left: 20),
+                  alignment: Alignment.topLeft,
+                  child: RaisedButton(
+                    child: Text('Get Today\'s Fortune.'),
+                    color: Colors.blueAccent.withOpacity(0.6),
+                    onPressed: () => _goDrawTarotScreen(),
+                  ),
+                ),
+                const Divider(color: Colors.indigo),
+                _dispCards(category: ""),
+                const Divider(color: Colors.indigo),
+                _dispCards(category: "Cups"),
+                const Divider(color: Colors.indigo),
+                _dispCards(category: "Pentacles"),
+                const Divider(color: Colors.indigo),
+                _dispCards(category: "Swords"),
+                const Divider(color: Colors.indigo),
+                _dispCards(category: "Wands"),
+                SizedBox(
+                  height: (size.height / 10),
+                )
+              ],
             ),
-            const Divider(color: Colors.indigo),
-            _dispCards(data: _tarot_bigs),
-            const Divider(color: Colors.indigo),
-            _dispCards(data: _tarot_cups),
-            const Divider(color: Colors.indigo),
-            _dispCards(data: _tarot_pentacles),
-            const Divider(color: Colors.indigo),
-            _dispCards(data: _tarot_swords),
-            const Divider(color: Colors.indigo),
-            _dispCards(data: _tarot_wands),
-            SizedBox(
-              height: (size.height / 10),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -201,20 +218,42 @@ class _MyHomePageState extends State<MyHomePage> {
   /**
    *
    */
-  Widget _dispCards({List<Map> data}) {
+  Widget _dispCards({String category}) {
     List<Widget> _list = List();
 
     Size size = MediaQuery.of(context).size;
 
+    List<Map> data = List();
+    int devide = 4;
+    switch (category) {
+      case "Cups":
+        data = _tarot_cups;
+        break;
+      case "Pentacles":
+        data = _tarot_pentacles;
+        break;
+      case "Swords":
+        data = _tarot_swords;
+        break;
+      case "Wands":
+        data = _tarot_wands;
+        break;
+      default:
+        data = _tarot_bigs;
+        devide = 2;
+        break;
+    }
+
     for (var i = 0; i < data.length; i++) {
       _list.add(
         Container(
-          width: (size.width / 2) - 20,
+          width: (size.width / devide) - 10,
           padding: EdgeInsets.symmetric(horizontal: 5),
           child: RaisedButton(
+            color: Colors.blueAccent.withOpacity(0.6),
             child: Text(
               '${data[i]['name']}',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 10),
             ),
             onPressed: () => _goTarotDetailScreen(id: data[i]['id']),
           ),
@@ -222,8 +261,21 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     }
 
-    return Wrap(
-      children: _list,
+    return Column(
+      children: <Widget>[
+        (category != "")
+            ? Container(
+                alignment: Alignment.topLeft,
+                decoration:
+                    BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
+                padding: EdgeInsets.only(left: 10, top: 5, bottom: 5),
+                child: Text('${category}'),
+              )
+            : Container(),
+        Wrap(
+          children: _list,
+        ),
+      ],
     );
   }
 

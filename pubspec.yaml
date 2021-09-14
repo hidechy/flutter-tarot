@@ -27,3 +27,18 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/image/
+
+flutter_native_splash:
+  image: "assets/image/tarotcard.JPG"
+  color: "2e2e2e"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/image/launchericon.JPG"
+
+  adaptive_icon_background: "#212121"
+  adaptive_icon_foreground: "assets/image/launchericon.JPG"
