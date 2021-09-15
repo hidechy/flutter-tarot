@@ -11,6 +11,8 @@ import './utilities/utility.dart';
 
 import 'package:flutter/services.dart';
 
+import 'screens/DrawTarotHistoryScreen.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -185,14 +187,32 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 20),
-                  alignment: Alignment.topLeft,
-                  child: RaisedButton(
-                    child: Text('Get Today\'s Fortune.'),
-                    color: Colors.blueAccent.withOpacity(0.6),
-                    onPressed: () => _goDrawTarotScreen(),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(left: 15),
+                      child: RaisedButton(
+                        child: Text(
+                          'Get Today\'s Fortune.',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        color: Colors.greenAccent.withOpacity(0.6),
+                        onPressed: () => _goDrawTarotScreen(),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(right: 15),
+                      child: RaisedButton(
+                        child: Text(
+                          'History',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        color: Colors.orangeAccent.withOpacity(0.6),
+                        onPressed: () => _goDrawTarotHistoryScreen(),
+                      ),
+                    ),
+                  ],
                 ),
                 const Divider(color: Colors.indigo),
                 _dispCards(category: ""),
@@ -287,6 +307,18 @@ class _MyHomePageState extends State<MyHomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => DrawTarotScreen(),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goDrawTarotHistoryScreen() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => DrawTarotHistoryScreen(),
       ),
     );
   }

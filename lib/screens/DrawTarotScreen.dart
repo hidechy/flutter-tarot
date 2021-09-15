@@ -110,10 +110,6 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     SizedBox(
                       height: 10,
                     ),
-                    Text(
-                      '${word}',
-                      style: TextStyle(fontSize: 14),
-                    ),
                     const Divider(color: Colors.indigo),
                     Container(
                       alignment: Alignment.topLeft,
@@ -122,6 +118,16 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                       padding: EdgeInsets.only(left: 10),
                       child:
                           (just_reverse == "just") ? Text('正位置') : Text('正位置'),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      child: Text(
+                        '${word}',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.all(10),

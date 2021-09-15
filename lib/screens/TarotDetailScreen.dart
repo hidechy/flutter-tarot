@@ -19,7 +19,8 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
 
   String name = "";
   String image = "";
-  String word = "";
+  String word_j = "";
+  String word_r = "";
   String msg_j = "";
   String msg_r = "";
   String msg2_j = "";
@@ -52,11 +53,16 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
       name = data['data']['name'];
       image =
           "http://toyohide.work/BrainLog/tarotcards/${data['data']['image']}.jpg";
-      word = data['data']['word'];
+
+      word_j = data['data']['word_j'];
+      word_r = data['data']['word_r'];
+
       msg_j = data['data']['msg_j'];
       msg_r = data['data']['msg_r'];
+
       msg2_j = data['data']['msg2_j'];
       msg2_r = data['data']['msg2_r'];
+
       msg3_j = data['data']['msg3_j'];
       msg3_r = data['data']['msg3_r'];
     }
@@ -74,7 +80,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('${name}'),
+        title: Text('Tarot Detail'),
         centerTitle: true,
 
         //-------------------------//これを消すと「←」が出てくる（消さない）
@@ -103,13 +109,13 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
                 style: TextStyle(fontSize: 20),
                 child: Column(
                   children: <Widget>[
+                    Text(
+                      '${name}',
+                      style: TextStyle(fontSize: 30),
+                    ),
                     Image.network(image),
                     SizedBox(
                       height: 10,
-                    ),
-                    Text(
-                      '${word}',
-                      style: TextStyle(fontSize: 14),
                     ),
                     const Divider(color: Colors.indigo),
                     Container(
@@ -118,6 +124,16 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
                           color: Colors.greenAccent.withOpacity(0.3)),
                       padding: EdgeInsets.only(left: 10),
                       child: Text('正位置'),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      child: Text(
+                        '${word_j}',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
@@ -148,6 +164,16 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
                           color: Colors.greenAccent.withOpacity(0.3)),
                       padding: EdgeInsets.only(left: 10),
                       child: Text('逆位置'),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      child: Text(
+                        '${word_r}',
+                        style:
+                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
+                      ),
                     ),
                     Container(
                       padding: EdgeInsets.all(10),
