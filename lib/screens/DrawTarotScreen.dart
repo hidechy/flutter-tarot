@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/provider.dart';
-import 'package:flutter_advanced_networkimage/transition.dart';
-
 import 'package:http/http.dart';
 
 import 'dart:convert';
@@ -158,7 +155,9 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     decoration: BoxDecoration(
                         color: Colors.greenAccent.withOpacity(0.3)),
                     padding: EdgeInsets.only(left: 10),
-                    child: (just_reverse == "just") ? Text('正位置') : Text('正位置'),
+                    child: Text(
+                      (just_reverse == "just") ? "正位置" : "逆位置",
+                    ),
                   ),
                   Container(
                     alignment: Alignment.topLeft,

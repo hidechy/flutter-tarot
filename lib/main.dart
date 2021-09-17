@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:tarotcard/screens/DrawTarotScreen.dart';
-
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 
 import 'dart:convert';
 
-import 'package:tarotcard/screens/TarotDetailScreen.dart';
-
 import './utilities/utility.dart';
 
-import 'package:flutter/services.dart';
-
 import 'screens/DrawTarotHistoryScreen.dart';
+import 'screens/Tarot3SpreadScreen.dart';
+import 'screens/TarotDetailScreen.dart';
+import 'screens/DrawTarotScreen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -202,7 +200,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.only(right: 15),
                       child: RaisedButton(
                         child: Text(
                           'History',
@@ -212,18 +209,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () => _goDrawTarotHistoryScreen(),
                       ),
                     ),
-                    // Container(
-                    //   alignment: Alignment.topLeft,
-                    //   padding: EdgeInsets.only(right: 15),
-                    //   child: RaisedButton(
-                    //     child: Text(
-                    //       '3 cards',
-                    //       style: TextStyle(fontSize: 12),
-                    //     ),
-                    //     color: Colors.yellowAccent.withOpacity(0.6),
-                    //     onPressed: () => _goDrawTarotHistoryScreen(),
-                    //   ),
-                    // ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      padding: EdgeInsets.only(right: 15),
+                      child: RaisedButton(
+                        child: Text(
+                          '3 spreads',
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        color: Colors.yellowAccent.withOpacity(0.6),
+                        onPressed: () => _goTarot3SpreadScreen(),
+                      ),
+                    ),
                   ],
                 ),
                 const Divider(color: Colors.indigo),
@@ -345,6 +342,18 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context) => TarotDetailScreen(
           id: id,
         ),
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  void _goTarot3SpreadScreen({id}) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Tarot3SpreadScreen(),
       ),
     );
   }

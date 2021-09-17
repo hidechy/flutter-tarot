@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart';
 
 import 'dart:convert';
 
 import '../utilities/utility.dart';
+
 import 'TarotDetailScreen.dart';
 
 class DrawTarotHistoryScreen extends StatefulWidget {
@@ -123,10 +123,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
       child: ListTile(
         leading: RotatedBox(
           quarterTurns: _qt,
-          child: Image.network(
-            _historyData[position]['image'],
-            height: 80,
-          ),
+          child: Image.network(_historyData[position]['image']),
         ),
         title: DefaultTextStyle(
           style: TextStyle(fontSize: 12),
