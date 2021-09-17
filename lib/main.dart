@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           'Get Today\'s Fortune.',
                           style: TextStyle(fontSize: 12),
                         ),
-                        color: Colors.greenAccent.withOpacity(0.6),
+                        color: Colors.pinkAccent.withOpacity(0.6),
                         onPressed: () => _goDrawTarotScreen(),
                       ),
                     ),
@@ -212,6 +212,18 @@ class _MyHomePageState extends State<MyHomePage> {
                         onPressed: () => _goDrawTarotHistoryScreen(),
                       ),
                     ),
+                    // Container(
+                    //   alignment: Alignment.topLeft,
+                    //   padding: EdgeInsets.only(right: 15),
+                    //   child: RaisedButton(
+                    //     child: Text(
+                    //       '3 cards',
+                    //       style: TextStyle(fontSize: 12),
+                    //     ),
+                    //     color: Colors.yellowAccent.withOpacity(0.6),
+                    //     onPressed: () => _goDrawTarotHistoryScreen(),
+                    //   ),
+                    // ),
                   ],
                 ),
                 const Divider(color: Colors.indigo),

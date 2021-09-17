@@ -24,6 +24,11 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
   String msg2 = "";
   String msg3 = "";
 
+  String prof1 = "";
+  String prof2 = "";
+
+  String flag = "";
+
   /**
    * 初期動作
    */
@@ -49,10 +54,16 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
       just_reverse = data['data']['just_reverse'];
       image =
           "http://toyohide.work/BrainLog/tarotcards/${data['data']['image']}.jpg";
+
+      flag = data['data']['image'].replaceAll('big', 'Major');
+
       word = data['data']['word'];
       msg = data['data']['msg'];
       msg2 = data['data']['msg2'];
       msg3 = data['data']['msg3'];
+
+      prof1 = data['data']['prof1'];
+      prof2 = data['data']['prof2'];
     }
 
     setState(() {});
@@ -95,64 +106,92 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
           SingleChildScrollView(
             child: Container(
               width: double.infinity,
-              child: DefaultTextStyle(
-                style: TextStyle(fontSize: 20),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '${name}',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    RotatedBox(
-                      quarterTurns: _qt,
-                      child: Image.network(image),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    const Divider(color: Colors.indigo),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                          color: Colors.greenAccent.withOpacity(0.3)),
-                      padding: EdgeInsets.only(left: 10),
-                      child:
-                          (just_reverse == "just") ? Text('正位置') : Text('正位置'),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: Text(
-                        '${word}',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Container(),
+                      Container(
+                        margin: EdgeInsets.only(top: 10, right: 10),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                        decoration: BoxDecoration(
+                            color: Colors.yellowAccent.withOpacity(0.3)),
+                        child: Text('${flag}'),
                       ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    '${name}',
+                    style: TextStyle(fontSize: 30),
+                  ),
+                  RotatedBox(
+                    quarterTurns: _qt,
+                    child: Image.network(image),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Text(
+                      '${prof1}',
+                      style: TextStyle(fontSize: 14),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        '${msg}',
-                        style: TextStyle(fontSize: 14),
-                      ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Text(
+                      '${prof2}',
+                      style: TextStyle(fontSize: 14),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg2}',
-                        style: TextStyle(fontSize: 14),
-                      ),
+                  ),
+                  const Divider(color: Colors.indigo),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    decoration: BoxDecoration(
+                        color: Colors.greenAccent.withOpacity(0.3)),
+                    padding: EdgeInsets.only(left: 10),
+                    child: (just_reverse == "just") ? Text('正位置') : Text('正位置'),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Text(
+                      '${word}',
+                      style:
+                          TextStyle(fontSize: 14, color: Colors.yellowAccent),
                     ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg3}',
-                        style: TextStyle(fontSize: 14),
-                      ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      '${msg}',
+                      style: TextStyle(fontSize: 14),
                     ),
-                  ],
-                ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      '${msg2}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
+                      '${msg3}',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

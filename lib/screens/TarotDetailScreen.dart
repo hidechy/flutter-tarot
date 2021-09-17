@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:http/http.dart';
+import '../utilities/utility.dart';
 
 import 'dart:convert';
-
-import '../utilities/utility.dart';
+import 'package:http/http.dart';
 
 class TarotDetailScreen extends StatefulWidget {
   final String id;
@@ -17,16 +16,12 @@ class TarotDetailScreen extends StatefulWidget {
 class _TarotDetailScreenState extends State<TarotDetailScreen> {
   Utility _utility = Utility();
 
-  String name = "";
-  String image = "";
-  String word_j = "";
-  String word_r = "";
-  String msg_j = "";
-  String msg_r = "";
-  String msg2_j = "";
-  String msg2_r = "";
-  String msg3_j = "";
-  String msg3_r = "";
+  List<Map<dynamic, dynamic>> _tarotData = List();
+
+  final PageController pageController = PageController();
+
+  // ページインデックス
+  int currentPage = 0;
 
   /**
    * 初期動作
@@ -42,7 +37,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
    * 初期データ作成
    */
   void _makeDefaultDisplayData() async {
-    String url = "http://toyohide.work/BrainLog/api/tarotselect";
+    String url = "http://toyohide.work/BrainLog/api/getAllTarot";
     Map<String, String> headers = {'content-type': 'application/json'};
     String body = json.encode({"id": widget.id});
     Response response = await post(url, headers: headers, body: body);
@@ -50,22 +45,32 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
     if (response != null) {
       Map data = jsonDecode(response.body);
 
-      name = data['data']['name'];
-      image =
-          "http://toyohide.work/BrainLog/tarotcards/${data['data']['image']}.jpg";
+      for (var i = 0; i < data['data'].length; i++) {
+        Map _map = Map();
+        _map['name'] = data['data'][i]['name'];
+        _map['image'] =
+            "http://toyohide.work/BrainLog/tarotcards/${data['data'][i]['image']}.jpg";
+        _map['flag'] = data['data'][i]['image'].replaceAll('big', 'Major');
+        ;
 
-      word_j = data['data']['word_j'];
-      word_r = data['data']['word_r'];
+        _map['prof1'] = data['data'][i]['prof1'];
+        _map['prof2'] = data['data'][i]['prof2'];
 
-      msg_j = data['data']['msg_j'];
-      msg_r = data['data']['msg_r'];
+        _map['word_j'] = data['data'][i]['word_j'];
+        _map['msg_j'] = data['data'][i]['msg_j'];
+        _map['msg2_j'] = data['data'][i]['msg2_j'];
+        _map['msg3_j'] = data['data'][i]['msg3_j'];
 
-      msg2_j = data['data']['msg2_j'];
-      msg2_r = data['data']['msg2_r'];
+        _map['word_r'] = data['data'][i]['word_r'];
+        _map['msg_r'] = data['data'][i]['msg_r'];
+        _map['msg2_r'] = data['data'][i]['msg2_r'];
+        _map['msg3_r'] = data['data'][i]['msg3_r'];
 
-      msg3_j = data['data']['msg3_j'];
-      msg3_r = data['data']['msg3_r'];
+        _tarotData.add(_map);
+      }
     }
+
+    pageController.jumpToPage(int.parse(widget.id) - 1);
 
     setState(() {});
   }
@@ -75,8 +80,6 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
    */
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -102,104 +105,148 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
-          SingleChildScrollView(
-            child: Container(
-              width: double.infinity,
-              child: DefaultTextStyle(
-                style: TextStyle(fontSize: 20),
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '${name}',
-                      style: TextStyle(fontSize: 30),
-                    ),
-                    Image.network(image),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    const Divider(color: Colors.indigo),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                          color: Colors.greenAccent.withOpacity(0.3)),
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text('正位置'),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: Text(
-                        '${word_j}',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        '${msg_j}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg2_j}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg3_j}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    const Divider(color: Colors.indigo),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                          color: Colors.greenAccent.withOpacity(0.3)),
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text('逆位置'),
-                    ),
-                    Container(
-                      alignment: Alignment.topLeft,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: Text(
-                        '${word_r}',
-                        style:
-                            TextStyle(fontSize: 14, color: Colors.yellowAccent),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        '${msg_r}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg2_r}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        '${msg3_r}',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  ],
+          PageView.builder(
+            controller: pageController,
+            itemCount: _tarotData.length,
+            itemBuilder: (context, index) {
+              //--------------------------------------// リセット
+              bool active = (index == currentPage);
+              if (active == false) {}
+              //--------------------------------------//
+
+              return SingleChildScrollView(
+                child: Container(
+                  padding: EdgeInsets.all(20),
+                  child: dispTarotDetail(index),
                 ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  /**
+   *
+   */
+  dispTarotDetail(int index) {
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                decoration:
+                    BoxDecoration(color: Colors.yellowAccent.withOpacity(0.3)),
+                child: Text('${_tarotData[index]['flag']}'),
               ),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            '${_tarotData[index]['name']}',
+            style: TextStyle(fontSize: 30),
+          ),
+          Image.network(_tarotData[index]['image']),
+          SizedBox(
+            height: 10,
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              '${_tarotData[index]['prof1']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              '${_tarotData[index]['prof2']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          const Divider(color: Colors.indigo),
+          Container(
+            alignment: Alignment.topLeft,
+            decoration:
+                BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
+            padding: EdgeInsets.only(left: 10),
+            child: Text('正位置'),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              '${_tarotData[index]['word_j']}',
+              style: TextStyle(fontSize: 14, color: Colors.yellowAccent),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.topLeft,
+            child: Text(
+              '${_tarotData[index]['msg_j']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              '${_tarotData[index]['msg2_j']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              '${_tarotData[index]['msg3_j']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          const Divider(color: Colors.indigo),
+          Container(
+            alignment: Alignment.topLeft,
+            decoration:
+                BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
+            padding: EdgeInsets.only(left: 10),
+            child: Text('逆位置'),
+          ),
+          Container(
+            alignment: Alignment.topLeft,
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            child: Text(
+              '${_tarotData[index]['word_r']}',
+              style: TextStyle(fontSize: 14, color: Colors.yellowAccent),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            alignment: Alignment.topLeft,
+            child: Text(
+              '${_tarotData[index]['msg_r']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              '${_tarotData[index]['msg2_r']}',
+              style: TextStyle(fontSize: 14),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: Text(
+              '${_tarotData[index]['msg3_r']}',
+              style: TextStyle(fontSize: 14),
             ),
           ),
         ],
