@@ -130,7 +130,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
   /**
    *
    */
-  dispTarotDetail(int index) {
+  Widget dispTarotDetail(int index) {
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
