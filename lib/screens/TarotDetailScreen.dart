@@ -16,16 +16,14 @@ class TarotDetailScreen extends StatefulWidget {
 class _TarotDetailScreenState extends State<TarotDetailScreen> {
   Utility _utility = Utility();
 
-  List<Map<dynamic, dynamic>> _tarotData = List();
+  List<Map<dynamic, dynamic>> _tarotData = [];
 
   final PageController pageController = PageController();
 
   // ページインデックス
   int currentPage = 0;
 
-  /**
-   * 初期動作
-   */
+  /// 初期動作
   @override
   void initState() {
     super.initState();
@@ -33,9 +31,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-   * 初期データ作成
-   */
+  /// 初期データ作成
   void _makeDefaultDisplayData() async {
     String url = "http://toyohide.work/BrainLog/api/getAllTarot";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -51,7 +47,6 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
         _map['image'] =
             "http://toyohide.work/BrainLog/tarotcards/${data['data'][i]['image']}.jpg";
         _map['flag'] = data['data'][i]['image'].replaceAll('big', 'Major');
-        ;
 
         _map['prof1'] = data['data'][i]['prof1'];
         _map['prof2'] = data['data'][i]['prof2'];
@@ -75,9 +70,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,9 +120,7 @@ class _TarotDetailScreenState extends State<TarotDetailScreen> {
     );
   }
 
-  /**
-   *
-   */
+  ///
   Widget dispTarotDetail(int index) {
     return SingleChildScrollView(
       child: Column(

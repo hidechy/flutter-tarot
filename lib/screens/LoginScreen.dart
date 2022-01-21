@@ -3,7 +3,9 @@ import 'package:http/http.dart';
 
 import 'dart:convert';
 
-import 'package:tarotcard/screens/TarotMainScreen.dart';
+import '../utilities/utility.dart';
+
+import 'TarotMainScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  Utility _utility = Utility();
+
   String _email = '';
   TextEditingController _teContEmail = TextEditingController();
 
@@ -19,9 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String _errorMsg = "";
 
-  /**
-   * 初期動作
-   */
+  /// 初期動作
   @override
   void initState() {
     super.initState();
@@ -29,17 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-   * 初期データ作成
-   */
+  /// 初期データ作成
   void _makeDefaultDisplayData() async {
     _teContEmail.text = '';
     _teContPassword.text = '';
   }
 
-  /**
-   *
-   */
+  ///
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,56 +61,66 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              style: TextStyle(fontSize: 13),
-              controller: _teContEmail,
-              onChanged: (value) {
-                setState(
-                  () {
-                    _email = value;
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          _utility.getBackGround(context: context),
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  style: TextStyle(fontSize: 13),
+                  controller: _teContEmail,
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _email = value;
+                      },
+                    );
                   },
-                );
-              },
-            ),
-            TextField(
-              style: TextStyle(fontSize: 13),
-              controller: _teContPassword,
-              onChanged: (value) {
-                setState(
-                  () {
-                    _password = value;
+                ),
+                TextField(
+                  style: TextStyle(fontSize: 13),
+                  controller: _teContPassword,
+                  onChanged: (value) {
+                    setState(
+                      () {
+                        _password = value;
+                      },
+                    );
                   },
-                );
-              },
+                ),
+                Container(
+                  height: 50,
+                  padding: EdgeInsets.only(top: 20),
+                  alignment: Alignment.topLeft,
+                  child: (_errorMsg != "")
+                      ? Text(
+                          _errorMsg,
+                          style: TextStyle(color: Colors.yellowAccent),
+                        )
+                      : null,
+                ),
+                ElevatedButton(
+                  onPressed: () => _getLoginToken(),
+                  child: Text('login'),
+                ),
+                ElevatedButton(
+                  onPressed: () => _setMyAccount(),
+                  child: Text('set my account'),
+                  style: ElevatedButton.styleFrom(
+                      primary: Colors.pinkAccent.withOpacity(0.3)),
+                ),
+              ],
             ),
-            Container(
-              height: 50,
-              padding: EdgeInsets.only(top: 20),
-              alignment: Alignment.topLeft,
-              child: (_errorMsg != "")
-                  ? Text(
-                      '${_errorMsg}',
-                      style: TextStyle(color: Colors.yellowAccent),
-                    )
-                  : null,
-            ),
-            RaisedButton(
-              onPressed: () => _getLoginToken(),
-              child: Text('login'),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 
-  /**
-   *
-   */
+  ///
   void _getLoginToken() async {
     String url = "http://toyohide.work/BrainLog/api/login";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -137,9 +145,16 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
+  void _setMyAccount() {
+    _teContEmail.text = "hide.toyoda@gmail.com";
+    _teContPassword.text = "Hidechy4819@";
+
+    _email = "hide.toyoda@gmail.com";
+    _password = "Hidechy4819@";
+  }
+
+  ///
   void _goLoginScreen() {
     Navigator.pushReplacement(
       context,

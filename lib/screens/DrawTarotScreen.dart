@@ -14,7 +14,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
   Utility _utility = Utility();
 
   String name = "";
-  String just_reverse = "";
+  String justReverse = "";
   String image = "";
   String word = "";
   String msg = "";
@@ -26,9 +26,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
 
   String flag = "";
 
-  /**
-   * 初期動作
-   */
+  /// 初期動作
   @override
   void initState() {
     super.initState();
@@ -36,9 +34,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-   * 初期データ作成
-   */
+  /// 初期データ作成
   void _makeDefaultDisplayData() async {
     String url = "http://toyohide.work/BrainLog/api/tarotcard";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -48,7 +44,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
     if (response != null) {
       Map data = jsonDecode(response.body);
       name = data['data']['name'];
-      just_reverse = data['data']['just_reverse'];
+      justReverse = data['data']['just_reverse'];
       image =
           "http://toyohide.work/BrainLog/tarotcards/${data['data']['image']}.jpg";
 
@@ -66,14 +62,10 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
   @override
   Widget build(BuildContext context) {
-    int _qt = (just_reverse == "just") ? 0 : 2;
-
-    Size size = MediaQuery.of(context).size;
+    int _qt = (justReverse == "just") ? 0 : 2;
 
     return Scaffold(
       appBar: AppBar(
@@ -115,7 +107,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                             EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                         decoration: BoxDecoration(
                             color: Colors.yellowAccent.withOpacity(0.3)),
-                        child: Text('${flag}'),
+                        child: Text(flag),
                       ),
                     ],
                   ),
@@ -123,7 +115,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     height: 10,
                   ),
                   Text(
-                    '${name}',
+                    name,
                     style: TextStyle(fontSize: 30),
                   ),
                   RotatedBox(
@@ -137,7 +129,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Text(
-                      '${prof1}',
+                      prof1,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
@@ -145,7 +137,7 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Text(
-                      '${prof2}',
+                      prof2,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
@@ -156,14 +148,14 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                         color: Colors.greenAccent.withOpacity(0.3)),
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
-                      (just_reverse == "just") ? "正位置" : "逆位置",
+                      (justReverse == "just") ? "正位置" : "逆位置",
                     ),
                   ),
                   Container(
                     alignment: Alignment.topLeft,
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: Text(
-                      '${word}',
+                      word,
                       style:
                           TextStyle(fontSize: 14, color: Colors.yellowAccent),
                     ),
@@ -172,21 +164,21 @@ class _DrawTarotScreenState extends State<DrawTarotScreen> {
                     padding: EdgeInsets.all(10),
                     alignment: Alignment.topLeft,
                     child: Text(
-                      '${msg}',
+                      msg,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      '${msg2}',
+                      msg2,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),
                   Container(
                     padding: EdgeInsets.all(10),
                     child: Text(
-                      '${msg3}',
+                      msg3,
                       style: TextStyle(fontSize: 14),
                     ),
                   ),

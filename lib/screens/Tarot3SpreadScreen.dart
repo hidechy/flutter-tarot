@@ -13,10 +13,10 @@ class Tarot3SpreadScreen extends StatefulWidget {
 class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
   Utility _utility = Utility();
 
-  List<Map<dynamic, dynamic>> _spreadData = List();
+  List<Map<dynamic, dynamic>> _spreadData = [];
 
   String name = "-";
-  String just_reverse = "-";
+  String justReverse = "-";
 
   String prof1 = "-";
   String prof2 = "-";
@@ -28,9 +28,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
 
   int _dispExplanation = 0;
 
-  /**
-   * 初期動作
-   */
+  /// 初期動作
   @override
   void initState() {
     super.initState();
@@ -38,9 +36,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-   * 初期データ作成
-   */
+  /// 初期データ作成
   void _makeDefaultDisplayData() async {
     String url = "http://toyohide.work/BrainLog/api/tarotthree";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -74,9 +70,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,25 +116,23 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     );
   }
 
-  /**
-   *
-   */
+  ///
   Widget _disp3cards() {
-    List<Widget> _list = List();
+    List<Widget> _list = [];
 
     Size size = MediaQuery.of(context).size;
 
-    List _midashi1 = List();
+    List _midashi1 = [];
     _midashi1.add('過去');
     _midashi1.add('現在');
     _midashi1.add('近未来');
 
-    List _midashi2 = List();
+    List _midashi2 = [];
     _midashi2.add('原因');
     _midashi2.add('結果');
     _midashi2.add('アドバイス');
 
-    List _midashi3 = List();
+    List _midashi3 = [];
     _midashi3.add('Yes');
     _midashi3.add('Pending');
     _midashi3.add('No');
@@ -193,12 +185,10 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     );
   }
 
-  /**
-   *
-   */
+  ///
   void _changeCardExplanation({index}) {
     name = _spreadData[index]['name'];
-    just_reverse = _spreadData[index]['reverse'];
+    justReverse = _spreadData[index]['reverse'];
 
     prof1 = _spreadData[index]['prof1'];
     prof2 = _spreadData[index]['prof2'];
@@ -214,9 +204,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
   Widget _dispCardExplanation() {
     if (_dispExplanation == 0) {
       return Container();
@@ -229,7 +217,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '${name}',
+            name,
             style: TextStyle(fontSize: 30),
           ),
           SizedBox(
@@ -239,7 +227,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Text(
-              '${prof1}',
+              prof1,
               style: TextStyle(fontSize: 14),
             ),
           ),
@@ -247,7 +235,7 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
             alignment: Alignment.topLeft,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Text(
-              '${prof2}',
+              prof2,
               style: TextStyle(fontSize: 14),
             ),
           ),
@@ -258,14 +246,14 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
                 BoxDecoration(color: Colors.greenAccent.withOpacity(0.3)),
             padding: EdgeInsets.only(left: 10),
             child: Text(
-              (just_reverse == "just") ? "正位置" : "逆位置",
+              (justReverse == "just") ? "正位置" : "逆位置",
             ),
           ),
           Container(
             alignment: Alignment.topLeft,
             padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
             child: Text(
-              '${word}',
+              word,
               style: TextStyle(fontSize: 14, color: Colors.yellowAccent),
             ),
           ),
@@ -273,21 +261,21 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
             padding: EdgeInsets.all(10),
             alignment: Alignment.topLeft,
             child: Text(
-              '${msg}',
+              msg,
               style: TextStyle(fontSize: 14),
             ),
           ),
           Container(
             padding: EdgeInsets.all(10),
             child: Text(
-              '${msg2}',
+              msg2,
               style: TextStyle(fontSize: 14),
             ),
           ),
           Container(
             padding: EdgeInsets.all(10),
             child: Text(
-              '${msg3}',
+              msg3,
               style: TextStyle(fontSize: 14),
             ),
           ),
@@ -296,10 +284,8 @@ class _Tarot3SpreadScreenState extends State<Tarot3SpreadScreen> {
     );
   }
 
-  /**
-   *
-   */
-  void _goTarot3SpreadScreen({id}) {
+  ///
+  void _goTarot3SpreadScreen() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

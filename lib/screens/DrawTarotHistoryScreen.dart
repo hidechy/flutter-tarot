@@ -15,11 +15,9 @@ class DrawTarotHistoryScreen extends StatefulWidget {
 class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
   Utility _utility = Utility();
 
-  List<Map<dynamic, dynamic>> _historyData = List();
+  List<Map<dynamic, dynamic>> _historyData = [];
 
-  /**
-   * 初期動作
-   */
+  /// 初期動作
   @override
   void initState() {
     super.initState();
@@ -27,9 +25,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     _makeDefaultDisplayData();
   }
 
-  /**
-   * 初期データ作成
-   */
+  /// 初期データ作成
   void _makeDefaultDisplayData() async {
     String url = "http://toyohide.work/BrainLog/api/tarothistory";
     Map<String, String> headers = {'content-type': 'application/json'};
@@ -62,9 +58,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     setState(() {});
   }
 
-  /**
-   *
-   */
+  ///
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,9 +94,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     );
   }
 
-  /**
-   * リスト表示
-   */
+  /// リスト表示
   Widget _tarotHistoryList() {
     return ListView.builder(
       itemCount: _historyData.length,
@@ -112,9 +104,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     );
   }
 
-  /**
-   * リストアイテム表示
-   */
+  /// リストアイテム表示
   Widget _listItem({int position}) {
     int _qt = (_historyData[position]['reverse'] == '0') ? 0 : 2;
 
@@ -161,9 +151,7 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     );
   }
 
-  /**
-   *
-   */
+  ///
   void _goTarotDetailScreen({id}) {
     Navigator.push(
       context,
