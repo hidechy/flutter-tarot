@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'dart:convert';
 
@@ -16,6 +17,15 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
   Utility _utility = Utility();
 
   List<Map<dynamic, dynamic>> _historyData = [];
+
+  final List<Map<dynamic, dynamic>> _ymList = [];
+
+  final ItemScrollController _itemScrollController = ItemScrollController();
+
+  final ItemPositionsListener _itemPositionsListener =
+      ItemPositionsListener.create();
+
+  int maxNo = 0;
 
   /// 初期動作
   @override
@@ -35,11 +45,19 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
     if (response != null) {
       Map data = jsonDecode(response.body);
 
+      var _ym = "";
       for (var i = 0; i < data['data'].length; i++) {
         Map _map = Map();
         _map['year'] = data['data'][i]['year'];
         _map['month'] = data['data'][i]['month'];
         _map['day'] = data['data'][i]['day'];
+
+        if ("${data['data'][i]['year']}-${data['data'][i]['month']}" != _ym) {
+          Map _map = {};
+          _map['ym'] = "${data['data'][i]['year']}-${data['data'][i]['month']}";
+          _map['pos'] = i;
+          _ymList.add(_map);
+        }
 
         _map['id'] = data['data'][i]['id'];
         _map['name'] = data['data'][i]['name'];
@@ -52,8 +70,12 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
         _map['word'] = data['data'][i]['word'];
 
         _historyData.add(_map);
+
+        _ym = "${data['data'][i]['year']}-${data['data'][i]['month']}";
       }
     }
+
+    print(_ymList);
 
     setState(() {});
   }
@@ -86,21 +108,43 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
         fit: StackFit.expand,
         children: <Widget>[
           _utility.getBackGround(context: context),
-          Container(
-            child: _tarotHistoryList(),
+          Column(
+            children: [
+              Expanded(
+                child: _tarotList(),
+              ),
+            ],
           ),
         ],
       ),
     );
   }
 
-  /// リスト表示
-  Widget _tarotHistoryList() {
-    return ListView.builder(
-      itemCount: _historyData.length,
-      itemBuilder: (context, int position) {
-        return _listItem(position: position);
-      },
+  ///
+  Widget _tarotList() {
+    return Column(
+      children: [
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+          ),
+          child: Wrap(
+            children: _makeYmBtn(),
+          ),
+        ),
+        const Divider(color: Colors.indigo),
+        Expanded(
+          child: ScrollablePositionedList.builder(
+            itemBuilder: (context, index) {
+              return _listItem(position: index);
+            },
+            itemCount: _historyData.length,
+            itemScrollController: _itemScrollController,
+            itemPositionsListener: _itemPositionsListener,
+          ),
+        ),
+      ],
     );
   }
 
@@ -138,17 +182,62 @@ class _DrawTarotHistoryScreenState extends State<DrawTarotHistoryScreen> {
             ],
           ),
         ),
-        trailing: GestureDetector(
-          onTap: () =>
-              _goTarotDetailScreen(id: _historyData[position]['id'].toString()),
-          child: Icon(
-            Icons.comment,
-            color: Colors.greenAccent,
-            size: 20,
-          ),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => _goTarotDetailScreen(
+                  id: _historyData[position]['id'].toString()),
+              child: Icon(
+                Icons.comment,
+                color: Colors.greenAccent,
+                size: 20,
+              ),
+            ),
+            Text(
+              _historyData[position]['id'].toString(),
+              style: TextStyle(color: Colors.grey),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  ///
+  List<Widget> _makeYmBtn() {
+    List<Widget> _btnList = [];
+    for (var i = 0; i < _ymList.length; i++) {
+      _btnList.add(
+        GestureDetector(
+          onTap: () => _scroll(
+            pos: _ymList[i]['pos'],
+            year: _ymList[i]['ym'],
+          ),
+          child: Container(
+            color: Colors.green[900].withOpacity(0.5),
+            margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 4),
+            child: Text(
+              '${_ymList[i]['ym']}',
+              style: const TextStyle(fontSize: 10),
+            ),
+          ),
+        ),
+      );
+    }
+    return _btnList;
+  }
+
+  ///
+  void _scroll({int pos, String year}) {
+    _itemScrollController.scrollTo(
+      index: pos,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeInOutCubic,
+    );
+
+    setState(() {});
   }
 
   ///
